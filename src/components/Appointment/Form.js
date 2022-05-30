@@ -16,6 +16,11 @@ export default function Form(props) {
     props.onCancel();
   };
 
+  const saveForm = ()=> {
+    props.onSave(student,interviewer);
+  }
+
+//console.log(props.interviewers)
   return (
     <main className="appointment__card appointment__card--create">
       <section className="appointment__card-left">
@@ -32,7 +37,7 @@ export default function Form(props) {
         <InterviewerList
           interviewers={props.interviewers}
           value={interviewer}
-          onChange={(id) => setInterviewer(id)}
+          onChange={setInterviewer}
         />
       </section>
       <section className="appointment__card-right">
@@ -40,7 +45,7 @@ export default function Form(props) {
           <Button danger onClick={cancel}>
             Cancel
           </Button>
-          <Button confirm onClick={props.onSave}>
+          <Button confirm onClick={saveForm}>
             Save
           </Button>
         </section>
