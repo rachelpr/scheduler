@@ -22,31 +22,31 @@ export function getInterview(state, interview) {
   if (interview === null) {
     return null;
   } else {
-    let student = "student";
-    let interviewer = "interviewer";
-
     interviewObj.student = interview.student;
     interviewObj.interviewer = state.interviewers[interview.interviewer];
   }
-
   return interviewObj;
 }
 
 //console.log(getInterview());
 
-export function getInterviewersForDay(state,day){
+export function getInterviewersForDay(state, day) {
   // find the correct day based on day provided using filter
   const filteredDay = state.days.filter((apptDay) => apptDay.name === day)[0];
+  //console.log(filteredDay);
 
   if (!filteredDay) {
     return [];
   }
-
+  let filterInterviewer = filteredDay.interviewers;
+  //console.log(filterInterviewer);
+  
   // get interviewers array and push to interviewerAry
   let interviewerAry = [];
-  for (let interviewerID of filteredDay.appointments) {
-    if (state.appointments[interviewerID])
-    interviewerAry.push(state.appointments[interviewerID]);
+  for (let interviewerID of filterInterviewer) {
+    if (state.interviewers[interviewerID])
+      interviewerAry.push(state.interviewers[interviewerID]);
   }
+  //console.log(interviewerAry);
   return interviewerAry;
 }
