@@ -16,6 +16,8 @@ export default function Appointment(props) {
   const DELETE = "DELETE";
   const CONFIRM = "CONFIRM";
   const EDIT = "EDIT";
+  const ERROR_SAVE = "ERROR_SAVE";
+  const ERROR_DELETE = "ERROR_DELETE";
   const { mode, transition, back } = useVisualMode(
     props.interview ? SHOW : EMPTY
   );
@@ -33,26 +35,20 @@ export default function Appointment(props) {
       student: name,
       interviewer,
     };
-    console.log(name);
-    transition(SAVING);
+    transition(SAVING,true);
     props
       .bookInterview(props.id, interview)
       .then(() => transition(SHOW))
-      .catch((error) => {
-        console.log(error);
-      });
+      .catch((error) => transition(ERROR_SAVE, true));
   }
 
-  function deleteInterview() {
-    transition(DELETE);
+  function deleteInterview(event) {
+    transition(DELETE,true);
     props
       .cancelInterview(props.id)
       .then(() => transition(EMPTY))
-      .catch((error) => {
-        console.log(error);
-      });
+      .catch((error) => transition(ERROR_DELETE, true));
   }
-
   return (
     <article className="appointment">
       <header>
