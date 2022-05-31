@@ -10,6 +10,7 @@ import {
 } from "helpers/selectors";
 
 export default function Application(props) {
+  // state for day, days, appointments, and interviewers
   const [state, setState] = useState({
     day: "Monday",
     days: [],
@@ -25,18 +26,35 @@ export default function Application(props) {
   const dailyInterviewers = getInterviewersForDay(state, state.day);
 
   const bookInterview = function (id, interview) {
-    //console.log(id, interview);
     const appointment = {
       ...state.appointments[id],
       interview: { ...interview },
+    };
+    //console.log(appointment)
+    const appointments = {
+      ...state.appointments,
+      [id]: appointment,
+    };
+
+    //console.log(interview)
+    return axios.put(`${apptsEndpoint}${id}`, { interview }).then(() => {
+      setState({
+        ...state,
+        appointments,
+      });
+    });
+  };
+
+  const cancelInterview = function (id) {
+    const appointment = {
+      ...state.appointments[id],
+      interview: null,
     };
     const appointments = {
       ...state.appointments,
       [id]: appointment,
     };
-    
-    console.log(interview)
-    return axios.put(`${apptsEndpoint}${id}`, { interview }).then(() => {
+    return axios.delete(`${apptsEndpoint}${id}`).then(() => {
       setState({
         ...state,
         appointments,
@@ -54,6 +72,7 @@ export default function Application(props) {
         interview={interview}
         interviewers={dailyInterviewers}
         bookInterview={bookInterview}
+        cancelInterview={cancelInterview}
       />
     );
   });
