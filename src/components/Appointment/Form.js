@@ -7,7 +7,9 @@ export default function Form(props) {
   const [interviewer, setInterviewer] = useState(props.interviewer || null);
   const [error, setError] = useState("");
 
+  // clearing the form
   const reset = () => {
+    setError("")
     setStudent("");
     setInterviewer(null);
   };
@@ -26,6 +28,7 @@ export default function Form(props) {
       setError("Please select an interviewer");
       return;
     }
+    setError("");
     props.onSave(student, interviewer);
   };
 
