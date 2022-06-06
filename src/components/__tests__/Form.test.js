@@ -6,8 +6,7 @@ import {
   getByTestId,
   fireEvent,
   getByText,
-  queryByText,
-  getAllByAltText,
+  queryByText
 } from "@testing-library/react";
 import Form from "components/Appointment/Form";
 
