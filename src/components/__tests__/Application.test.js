@@ -1,11 +1,37 @@
 import React from "react";
 
-import { render, cleanup } from "@testing-library/react";
+import {
+  render,
+  cleanup,
+  waitForElement,
+  fireEvent,
+  act,
+  getByText,
+  queryByText
+} from "@testing-library/react";
 
 import Application from "components/Application";
 
 afterEach(cleanup);
 
-it("renders without crashing", () => {
-  render(<Application />);
+
+it("defaults to Monday and changes the schedule when a new day is selected", () => {
+  const { getByText } = render(<Application />);
+
+  return waitForElement(() => getByText("Monday")).then(() => {
+    fireEvent.click(getByText("Tuesday"));
+    expect(getByText("Leopold Silvers")).toBeInTheDocument();
+  });
 });
+
+// jest.mock("axios");
+// it("defaults to Monday and changes the schedule when a new day is selected", async () => {
+//   const mockaxios = jest.spyOn(axios, "get");
+//   axios.get = jest.fn(()=>fixtures)
+//   const { getByText } = render(<Application />);
+//   expect(axios.get).toHaveBeenCalledTimes(3);
+
+  // return waitForElement(() => getByText("Monday")).then(() => {
+  //   fireEvent.click(getByText("Tuesday"));
+  //   expect(getByText("Leopold Silvers")).toBeInTheDocument();
+  // });
