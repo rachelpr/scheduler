@@ -24,7 +24,7 @@ export default function useApplicationData() {
     };
 
     return axios.put(`${apptsEndpoint}${id}`, { interview }).then(() => {
-      // getting the new days array to be updated 
+      // getting the new days array to be updated
       // passing a snapshot of state/appointments
       const updatedDays = getUpdatedDaysArray({
         ...state,
@@ -39,11 +39,10 @@ export default function useApplicationData() {
   };
 
   const getUpdatedDaysArray = function (newState) {
-
     //search for the day in state
     const foundDay = newState.days.find((day) => day.name === newState.day);
     // update the foundDay.spots with the spots remaining
-    
+
     foundDay.spots = countSpots(newState);
     // getting the index of the day in newState
     const foundDayIndex = newState.days.findIndex(
@@ -103,17 +102,21 @@ export default function useApplicationData() {
       axios.get(daysEndpoint),
       axios.get(apptsEndpoint),
       axios.get(interviewersEndpoint),
-    ]).then(([days, appointments, interviewers]) => {
-      // console.log(days.data);
-      // console.log(appointments.data);
-      // console.log(interviewers.data);
-      setState((prev) => ({
-        ...prev,
-        days: days.data,
-        appointments: appointments.data,
-        interviewers: interviewers.data,
-      }));
-    });
+    ])
+      .then(([days, appointments, interviewers]) => {
+        // console.log(days.data);
+        // console.log(appointments.data);
+        // console.log(interviewers.data);
+        setState((prev) => ({
+          ...prev,
+          days: days.data,
+          appointments: appointments.data,
+          interviewers: interviewers.data,
+        }));
+      })
+      .catch((err) => {
+        console.log(err);
+      });
     //setDays(response.data);
   }, []);
 
