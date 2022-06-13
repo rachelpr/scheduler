@@ -1,5 +1,6 @@
 import React from "react";
 
+// returns error component when error occurrs in booking
 export default function Error(props){
   return(
     <main className="appointment__card appointment__card--error">

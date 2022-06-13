@@ -1,5 +1,6 @@
 import React from "react";
 
+// returns component that shows status messages for deleting or saving
 export default function Status(props) {
   return (
     <main className="appointment__card appointment__card--status">

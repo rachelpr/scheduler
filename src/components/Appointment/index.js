@@ -9,6 +9,7 @@ import Confirm from "./Confirm";
 import Error from "./Error";
 import useVisualMode from "hooks/useVisualMode";
 
+// returns component for the appointment
 export default function Appointment(props) {
   const EMPTY = "EMPTY";
   const SHOW = "SHOW";
@@ -19,18 +20,23 @@ export default function Appointment(props) {
   const EDIT = "EDIT";
   const ERROR_SAVE = "ERROR_SAVE";
   const ERROR_DELETE = "ERROR_DELETE";
+
+  // setup for mode/transitoin/back hook
   const { mode, transition, back } = useVisualMode(
     props.interview ? SHOW : EMPTY
   );
 
+    // confirms the booking
   function confirm() {
     transition(CONFIRM);
   }
 
+  // transitions to edit if the form is being edited
   const editForm = () => {
     transition(EDIT);
   };
 
+  // saves the appointment
   function save(name, interviewer) {
     const interview = {
       student: name,
@@ -43,6 +49,7 @@ export default function Appointment(props) {
       .catch((error) => transition(ERROR_SAVE, true));
   }
 
+  // deletes the appointment
   function deleteInterview(event) {
     transition(DELETE, true);
     props
