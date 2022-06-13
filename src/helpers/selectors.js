@@ -1,5 +1,7 @@
+//Various helper functions for interviews and appointments
+
+// find the correct day based on day provided using filter
 export function getAppointmentsForDay(state, day) {
-  // find the correct day based on day provided using filter
   const filteredDay = state.days.filter((apptDay) => apptDay.name === day)[0];
 
   if (!filteredDay) {
@@ -15,8 +17,7 @@ export function getAppointmentsForDay(state, day) {
   return appointmentsAry;
 }
 
-//console.log(getAppointmentsForDay());
-
+// gets and interview object and returns it
 export function getInterview(state, interview) {
   let interviewObj = {};
   if (interview === null) {
@@ -28,25 +29,21 @@ export function getInterview(state, interview) {
   return interviewObj;
 }
 
-//console.log(getInterview());
-
+// gets the interviewers for the day and returns an array of interviewer objects
 export function getInterviewersForDay(state, day) {
   // find the correct day based on day provided using filter
   const filteredDay = state.days.filter((apptDay) => apptDay.name === day)[0];
-  //console.log(filteredDay);
 
   if (!filteredDay) {
     return [];
   }
   let filterInterviewer = filteredDay.interviewers;
-  //console.log(filterInterviewer);
-  
+
   // get interviewers array and push to interviewerAry
   let interviewerAry = [];
   for (let interviewerID of filterInterviewer) {
     if (state.interviewers[interviewerID])
       interviewerAry.push(state.interviewers[interviewerID]);
   }
-  //console.log(interviewerAry);
   return interviewerAry;
 }

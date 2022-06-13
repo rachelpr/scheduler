@@ -3,21 +3,21 @@ import axios from "axios";
 import { getAppointmentsForDay } from "helpers/selectors";
 
 export default function useApplicationData() {
+  // combined state for day, days, appointments, interviewers
   const [state, setState] = useState({
     day: "Monday",
     days: [],
     appointments: {},
     interviewers: {},
   });
-  //console.log(state);
   const setDay = (day) => setState({ ...state, day });
 
+  // books an interview
   const bookInterview = function (id, interview) {
     const appointment = {
       ...state.appointments[id],
       interview: { ...interview },
     };
-    //console.log(appointment)
     const appointments = {
       ...state.appointments,
       [id]: appointment,
@@ -42,7 +42,6 @@ export default function useApplicationData() {
     //search for the day in state
     const foundDay = newState.days.find((day) => day.name === newState.day);
     // update the foundDay.spots with the spots remaining
-
     foundDay.spots = countSpots(newState);
     // getting the index of the day in newState
     const foundDayIndex = newState.days.findIndex(
@@ -56,6 +55,7 @@ export default function useApplicationData() {
     return daysCopy;
   };
 
+  // cancels/deletes an interview
   const cancelInterview = function (id) {
     const appointment = {
       ...state.appointments[id],
@@ -65,7 +65,6 @@ export default function useApplicationData() {
       ...state.appointments,
       [id]: appointment,
     };
-    console.log(appointments);
     return axios.delete(`${apptsEndpoint}${id}`).then(() => {
       const updatedDays = getUpdatedDaysArray({
         ...state,
@@ -79,6 +78,7 @@ export default function useApplicationData() {
     });
   };
 
+  // counts the number of spots
   const countSpots = function (newState) {
     let spotsFree = 0;
     //use getAppointmentsForDay to get the appointments array
@@ -98,15 +98,13 @@ export default function useApplicationData() {
   const interviewersEndpoint = "/api/interviewers/";
 
   useEffect(() => {
+    // after component renders get all the data from api endpoints
     Promise.all([
       axios.get(daysEndpoint),
       axios.get(apptsEndpoint),
       axios.get(interviewersEndpoint),
     ])
       .then(([days, appointments, interviewers]) => {
-        // console.log(days.data);
-        // console.log(appointments.data);
-        // console.log(interviewers.data);
         setState((prev) => ({
           ...prev,
           days: days.data,
@@ -117,7 +115,6 @@ export default function useApplicationData() {
       .catch((err) => {
         console.log(err);
       });
-    //setDays(response.data);
   }, []);
 
   return { state, setDay, bookInterview, cancelInterview, countSpots };
